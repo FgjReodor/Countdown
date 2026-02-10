@@ -190,7 +190,7 @@
 
   <div class="container" id="countdownView">
     <h1>omw to spoon you</h1>
-    <div class="subtitle">friday the 13th never looked so good</div>
+    <div class="subtitle">soldier coming home 🪖 friday the 13th never looked so good</div>
 
     <div class="countdown">
       <div class="time-block">
@@ -224,7 +224,7 @@
   <div class="container done-container" id="doneView">
     <div class="done-emoji">🫶</div>
     <h1>IT'S TIME</h1>
-    <div class="meme-text">the waiting is over. go get your hug.</div>
+    <div class="meme-text">mission complete. welcome home, soldier 🪖💕</div>
   </div>
 
   <div class="tiny-footer">made with 0 sleep & 100% love</div>
@@ -238,18 +238,18 @@
     const TOTAL_DURATION = TARGET - CREATED;
 
     const memeTexts = [
-      { min: 4320, text: "days without you feel like years ngl" },
-      { min: 2880, text: "i'm already picking my outfit (it's the same hoodie)" },
-      { min: 1440, text: "ONE MORE DAY. i'm literally vibrating." },
-      { min: 720,  text: "can time go any slower??? asking for a friend" },
-      { min: 360,  text: "me refreshing this page every 5 min like a normal person" },
-      { min: 120,  text: "THE FINAL STRETCH. THIS IS NOT A DRILL." },
-      { min: 60,   text: "one hour left and i already forgot how to act normal" },
-      { min: 30,   text: "running to you like that one naruto meme" },
-      { min: 10,   text: "so close i can almost steal your hoodies" },
-      { min: 5,    text: "AHHHHHH" },
-      { min: 1,    text: "i can hear the final countdown playing" },
-      { min: 0,    text: "any second now... 👀" },
+      { min: 4320, text: "she's out there serving the country and i'm here serving looks 💅🪖" },
+      { min: 2880, text: "my soldier is tougher than me... i can't even survive 2 days without her 🥺" },
+      { min: 1440, text: "ONE MORE DAY. permission to be excited, sir 🫡" },
+      { min: 720,  text: "she's been doing push-ups, i've been doing push-ups on the snooze button 😴" },
+      { min: 360,  text: "me refreshing this page like i'm waiting for deployment orders 🪖" },
+      { min: 120,  text: "THE FINAL STRETCH. THIS IS NOT A DRILL. (actually it's literally not a drill anymore) 🫡" },
+      { min: 60,   text: "one hour left and i already forgot how to act normal 🧍" },
+      { min: 30,   text: "soldier inbound 🚁 ETA 30 minutes" },
+      { min: 10,   text: "so close i can almost steal your camo hoodie 🪖💕" },
+      { min: 5,    text: "AHHHHHH 🫠" },
+      { min: 1,    text: "MISSION ALMOST COMPLETE 🎯" },
+      { min: 0,    text: "any second now... 👀🫡" },
     ];
 
     function getMemeText(minutesLeft) {
@@ -291,7 +291,7 @@
       const progress = Math.min(100, Math.max(0, (elapsed / TOTAL_DURATION) * 100));
       document.getElementById('progressFill').style.width = progress.toFixed(2) + '%';
       document.getElementById('progressLabel').textContent =
-        progress.toFixed(1) + '% closer to hugs';
+        progress.toFixed(1) + '% mission complete 🎯';
     }
 
     // Floating hearts
@@ -299,7 +299,7 @@
       const container = document.getElementById('heartsBg');
       const heart = document.createElement('div');
       heart.className = 'floating-heart';
-      const emojis = ['💕', '💗', '✨', '💖', '🩷', '🤍', '💫'];
+      const emojis = ['💕', '💗', '✨', '💖', '🩷', '🤍', '💫', '🪖', '🫡', '🎖️', '⭐'];
       heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
       heart.style.left = Math.random() * 100 + '%';
       heart.style.fontSize = (16 + Math.random() * 20) + 'px';
