@@ -20,7 +20,6 @@
       font-family: 'Nunito', sans-serif;
       overflow-x: hidden;
       position: relative;
-      padding: 2rem 0;
     }
 
     body::before {
@@ -215,7 +214,11 @@
 
     /* ---- ENVELOPE ---- */
     .envelope-section {
-      margin-top: 1.5rem;
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
     }
 
     .envelope-btn {
@@ -247,8 +250,6 @@
       width: 100%; height: 100%;
       background: rgba(0, 0, 0, 0.7);
       z-index: 100;
-      align-items: center;
-      justify-content: center;
       backdrop-filter: blur(5px);
     }
 
@@ -257,7 +258,10 @@
     }
 
     .envelope-wrapper {
-      position: relative;
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
       width: min(90vw, 320px);
       display: flex;
       flex-direction: column;
@@ -398,9 +402,126 @@
       100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
     }
 
+    /* ---- CHAOS BUTTON ---- */
+    .chaos-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      color: #ffb8c9;
+      font-family: 'Nunito', sans-serif;
+      padding: 0.7rem 1.5rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 45, 85, 0.3);
+      background: rgba(255, 45, 85, 0.1);
+      transition: all 0.3s;
+    }
+
+    .chaos-btn:hover {
+      background: rgba(255, 45, 85, 0.2);
+      border-color: rgba(255, 45, 85, 0.5);
+      box-shadow: 0 0 20px rgba(255, 45, 85, 0.2);
+    }
+
+    .bottom-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10% { transform: translateX(-8px) rotate(-1deg); }
+      20% { transform: translateX(8px) rotate(1deg); }
+      30% { transform: translateX(-6px) rotate(-0.5deg); }
+      40% { transform: translateX(6px) rotate(0.5deg); }
+      50% { transform: translateX(-4px); }
+      60% { transform: translateX(4px); }
+      70% { transform: translateX(-2px); }
+      80% { transform: translateX(2px); }
+      90% { transform: translateX(-1px); }
+    }
+
+    .screen-shake {
+      animation: shake 0.6s ease-in-out;
+    }
+
+    /* I MISS YOU fullscreen text */
+    .miss-you-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 200;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .miss-you-overlay.active {
+      display: block;
+    }
+
+    .miss-you-text {
+      position: absolute;
+      font-family: 'Fredoka One', cursive;
+      color: #ff2d55;
+      white-space: nowrap;
+      animation: missYouPop 1.5s ease-out forwards;
+      text-shadow: 0 0 20px rgba(255, 45, 85, 0.6);
+    }
+
+    @keyframes missYouPop {
+      0% { transform: scale(0) rotate(var(--rot)); opacity: 0; }
+      30% { transform: scale(1.2) rotate(var(--rot)); opacity: 1; }
+      100% { transform: scale(1) rotate(var(--rot)); opacity: 0; }
+    }
+
+    /* Disco mode */
+    .disco-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 150;
+      pointer-events: none;
+      animation: discoColors 0.4s linear infinite;
+      mix-blend-mode: overlay;
+      opacity: 0.3;
+    }
+
+    .disco-overlay.active {
+      display: block;
+    }
+
+    @keyframes discoColors {
+      0% { background: #ff2d55; }
+      16% { background: #ff6b8a; }
+      33% { background: #e91e63; }
+      50% { background: #9c27b0; }
+      66% { background: #ff4081; }
+      83% { background: #f50057; }
+      100% { background: #ff2d55; }
+    }
+
+    /* Confetti */
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      z-index: 200;
+      pointer-events: none;
+      animation: confettiFall linear forwards;
+    }
+
+    @keyframes confettiFall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+
     .tiny-footer {
       position: fixed;
-      bottom: 15px;
+      bottom: 10px;
       opacity: 0.3;
       font-size: 0.75rem;
       z-index: 1;
@@ -445,7 +566,10 @@
     </div>
 
     <div class="envelope-section">
-      <button class="envelope-btn" id="openEnvelope">psst... trykk her 💌</button>
+      <div class="bottom-buttons">
+        <button class="envelope-btn" id="openEnvelope">psst... trykk her 💌</button>
+        <button class="chaos-btn" id="chaosBtn">ikke trykk her 👀</button>
+      </div>
     </div>
   </div>
 
@@ -468,6 +592,9 @@
       </div>
     </div>
   </div>
+
+  <div class="miss-you-overlay" id="missYouOverlay"></div>
+  <div class="disco-overlay" id="discoOverlay"></div>
 
   <div class="tiny-footer">made with 0 sleep & 100% love</div>
 
@@ -647,6 +774,128 @@
         document.getElementById('closeLetter').click();
       } else if (e.target === this && !envelopeOpened) {
         this.classList.remove('active');
+      }
+    });
+
+    // ---- CHAOS BUTTON ----
+    let chaosLevel = 0;
+    const chaosBtn = document.getElementById('chaosBtn');
+    const chaosLabels = [
+      'ikke trykk her 👀',
+      'ok en gang til? 🤔',
+      'du gir deg ikke?? 😳',
+      '⚠️ SISTE ADVARSEL ⚠️',
+      '🪩 DU BA OM DET 🪩'
+    ];
+
+    function spawnConfetti() {
+      const colors = ['#ff2d55', '#ff6b8a', '#e91e63', '#ff4081', '#ffb8c9', '#fff', '#ffd700'];
+      for (let i = 0; i < 50; i++) {
+        const c = document.createElement('div');
+        c.className = 'confetti';
+        c.style.left = Math.random() * 100 + 'vw';
+        c.style.top = '-10px';
+        c.style.width = (6 + Math.random() * 8) + 'px';
+        c.style.height = (6 + Math.random() * 8) + 'px';
+        c.style.background = colors[Math.floor(Math.random() * colors.length)];
+        c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+        c.style.animationDuration = (2 + Math.random() * 3) + 's';
+        c.style.animationDelay = Math.random() * 0.5 + 's';
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 5000);
+      }
+    }
+
+    function chaosHeartExplosion() {
+      const hearts = ['💗', '💕', '💖', '🩷', '💘', '💝', '❤️‍🔥', '💓'];
+      for (let i = 0; i < 30; i++) {
+        const h = document.createElement('div');
+        h.className = 'heart-burst';
+        h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+        h.style.position = 'fixed';
+        h.style.left = (20 + Math.random() * 60) + 'vw';
+        h.style.top = (20 + Math.random() * 60) + 'vh';
+        h.style.fontSize = (1.5 + Math.random() * 2) + 'rem';
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 100 + Math.random() * 150;
+        h.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
+        h.style.setProperty('--ty', Math.sin(angle) * dist + 'px');
+        h.style.zIndex = '200';
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 1000);
+      }
+    }
+
+    function missYouFillScreen() {
+      const overlay = document.getElementById('missYouOverlay');
+      overlay.classList.add('active');
+      overlay.innerHTML = '';
+      const phrases = ['SAVNER DEG', 'I MISS YOU', 'KYSS MEG', '💗💗💗', 'KOM HJEM', 'KLEM MEG'];
+      for (let i = 0; i < 20; i++) {
+        const t = document.createElement('div');
+        t.className = 'miss-you-text';
+        t.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+        t.style.left = Math.random() * 80 + 'vw';
+        t.style.top = Math.random() * 80 + 'vh';
+        t.style.fontSize = (1 + Math.random() * 3) + 'rem';
+        const rot = -20 + Math.random() * 40;
+        t.style.setProperty('--rot', rot + 'deg');
+        t.style.animationDelay = Math.random() * 0.5 + 's';
+        overlay.appendChild(t);
+      }
+      setTimeout(() => {
+        overlay.classList.remove('active');
+        overlay.innerHTML = '';
+      }, 2500);
+    }
+
+    let discoInterval = null;
+    function startDisco() {
+      const disco = document.getElementById('discoOverlay');
+      disco.classList.add('active');
+      // Rapid hearts + confetti during disco
+      let discoTicks = 0;
+      discoInterval = setInterval(() => {
+        chaosHeartExplosion();
+        spawnConfetti();
+        discoTicks++;
+        if (discoTicks > 6) {
+          clearInterval(discoInterval);
+          disco.classList.remove('active');
+        }
+      }, 500);
+    }
+
+    chaosBtn.addEventListener('click', function() {
+      chaosLevel++;
+
+      if (chaosLevel === 1) {
+        // Hearts explosion
+        chaosHeartExplosion();
+        chaosBtn.textContent = chaosLabels[1];
+      } else if (chaosLevel === 2) {
+        // Confetti
+        spawnConfetti();
+        chaosBtn.textContent = chaosLabels[2];
+      } else if (chaosLevel === 3) {
+        // Screen shake + I MISS YOU
+        document.body.classList.add('screen-shake');
+        setTimeout(() => document.body.classList.remove('screen-shake'), 600);
+        missYouFillScreen();
+        chaosBtn.textContent = chaosLabels[3];
+      } else if (chaosLevel === 4) {
+        // FULL DISCO MODE
+        startDisco();
+        document.body.classList.add('screen-shake');
+        setTimeout(() => document.body.classList.remove('screen-shake'), 600);
+        missYouFillScreen();
+        chaosBtn.textContent = chaosLabels[4];
+      } else {
+        // After level 4, keep going with everything
+        startDisco();
+        document.body.classList.add('screen-shake');
+        setTimeout(() => document.body.classList.remove('screen-shake'), 600);
+        missYouFillScreen();
       }
     });
 
