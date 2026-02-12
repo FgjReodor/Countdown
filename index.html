@@ -15,11 +15,23 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      background: linear-gradient(135deg, #2d0a1e 0%, #4a1035 30%, #1a0a2e 70%, #2d0a1e 100%);
       color: #fff;
       font-family: 'Nunito', sans-serif;
       overflow: hidden;
       position: relative;
+    }
+
+    /* subtle radial glow behind the countdown */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(255, 100, 130, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
     }
 
     .hearts-bg {
@@ -34,14 +46,15 @@
       position: absolute;
       bottom: -60px;
       animation: floatUp linear infinite;
-      opacity: 0.6;
+      opacity: 0.5;
       font-size: 24px;
       user-select: none;
+      filter: drop-shadow(0 0 6px rgba(255, 100, 130, 0.4));
     }
 
     @keyframes floatUp {
-      0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.6; }
-      50% { opacity: 0.8; }
+      0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.5; }
+      50% { opacity: 0.7; }
       100% { transform: translateY(-110vh) rotate(360deg) scale(0.5); opacity: 0; }
     }
 
@@ -55,11 +68,12 @@
       font-family: 'Fredoka One', cursive;
       font-size: clamp(1.8rem, 5vw, 3.5rem);
       margin-bottom: 0.5rem;
-      background: linear-gradient(90deg, #ff6b6b, #ee5a24, #ff6b6b, #f0932b, #ff6b6b);
+      background: linear-gradient(90deg, #ff6b8a, #ff2d55, #ff6b8a, #e91e63, #ff6b8a);
       background-size: 200% auto;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       animation: shimmer 3s linear infinite;
+      filter: drop-shadow(0 0 20px rgba(255, 45, 85, 0.3));
     }
 
     @keyframes shimmer {
@@ -70,6 +84,7 @@
       font-size: clamp(1rem, 2.5vw, 1.3rem);
       opacity: 0.8;
       margin-bottom: 2.5rem;
+      color: #ffb8c9;
     }
 
     .countdown {
@@ -81,40 +96,44 @@
     }
 
     .time-block {
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 45, 85, 0.08);
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 107, 107, 0.3);
+      border: 1px solid rgba(255, 45, 85, 0.25);
       border-radius: 20px;
       padding: clamp(1rem, 3vw, 1.8rem) clamp(1.2rem, 3vw, 2rem);
       min-width: clamp(80px, 18vw, 120px);
-      transition: transform 0.3s, box-shadow 0.3s;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
     }
 
     .time-block:hover {
       transform: translateY(-5px) scale(1.05);
-      box-shadow: 0 10px 30px rgba(255, 107, 107, 0.2);
+      box-shadow: 0 10px 40px rgba(255, 45, 85, 0.25);
+      border-color: rgba(255, 45, 85, 0.5);
     }
 
     .time-number {
       font-family: 'Fredoka One', cursive;
       font-size: clamp(2.5rem, 7vw, 4rem);
-      color: #ff6b6b;
+      color: #ff4d7a;
       line-height: 1;
       display: block;
+      text-shadow: 0 0 20px rgba(255, 45, 85, 0.4);
     }
 
     .time-label {
       font-size: clamp(0.7rem, 2vw, 0.9rem);
       text-transform: uppercase;
       letter-spacing: 2px;
-      opacity: 0.7;
+      opacity: 0.6;
       margin-top: 0.5rem;
+      color: #ffb8c9;
     }
 
     .meme-text {
       font-size: clamp(1.1rem, 3vw, 1.5rem);
       padding: 1rem 2rem;
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 45, 85, 0.08);
+      border: 1px solid rgba(255, 45, 85, 0.15);
       border-radius: 15px;
       display: inline-block;
       max-width: 500px;
@@ -134,7 +153,7 @@
 
     .progress-bar {
       height: 12px;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.08);
       border-radius: 10px;
       overflow: hidden;
       position: relative;
@@ -142,17 +161,35 @@
 
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, #ff6b6b, #f0932b, #ff6b6b);
+      background: linear-gradient(90deg, #ff2d55, #e91e63, #ff6b8a, #ff2d55);
       background-size: 200% auto;
       animation: shimmer 2s linear infinite;
       border-radius: 10px;
       transition: width 1s ease;
+      box-shadow: 0 0 10px rgba(255, 45, 85, 0.5);
     }
 
     .progress-label {
       font-size: 0.85rem;
       opacity: 0.7;
       margin-top: 0.4rem;
+      color: #ffb8c9;
+    }
+
+    /* pulsing heart above the title */
+    .big-heart {
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin-bottom: 0.5rem;
+      animation: heartbeat 1.2s ease-in-out infinite;
+      filter: drop-shadow(0 0 15px rgba(255, 45, 85, 0.5));
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      15% { transform: scale(1.15); }
+      30% { transform: scale(1); }
+      45% { transform: scale(1.1); }
+      60% { transform: scale(1); }
     }
 
     .done-container {
@@ -169,6 +206,7 @@
     .done-emoji {
       font-size: clamp(4rem, 12vw, 8rem);
       animation: bounce 0.6s ease infinite alternate;
+      filter: drop-shadow(0 0 20px rgba(255, 45, 85, 0.6));
     }
 
     @keyframes bounce {
@@ -182,6 +220,7 @@
       opacity: 0.3;
       font-size: 0.75rem;
       z-index: 1;
+      color: #ffb8c9;
     }
   </style>
 </head>
@@ -189,6 +228,7 @@
   <div class="hearts-bg" id="heartsBg"></div>
 
   <div class="container" id="countdownView">
+    <div class="big-heart">💗</div>
     <h1>omw to spoon you</h1>
     <div class="subtitle">soldier coming home 🪖 friday the 13th never looked so good</div>
 
@@ -292,12 +332,12 @@
         progress.toFixed(1) + '% mission complete 🎯';
     }
 
-    // Floating hearts
+    // Floating emojis
     function spawnHeart() {
       const container = document.getElementById('heartsBg');
       const heart = document.createElement('div');
       heart.className = 'floating-heart';
-      const emojis = ['💕', '💗', '✨', '💖', '🩷', '🤍', '💫', '🪖', '🫡', '🎖️', '⭐'];
+      const emojis = ['💕', '💗', '💖', '🩷', '💘', '💝', '❤️‍🔥', '✨', '🪖', '🫡', '💫', '🤍', '💓'];
       heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
       heart.style.left = Math.random() * 100 + '%';
       heart.style.fontSize = (16 + Math.random() * 20) + 'px';
